@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Pierre Chifflier <chifflier@wzdftpd.net>"]
 license = "GPL-2.0"
 build = "build.rs"
+readme = "README.md"
 
 [dependencies]
 json = "0.11"
