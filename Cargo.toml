@@ -1,5 +1,6 @@
 [package]
 name = "libnftables-sys"
+description = "FFI bindings for libnftables."
 version = "0.1.0"
 authors = ["Pierre Chifflier <chifflier@wzdftpd.net>"]
 license = "GPL-2.0"
