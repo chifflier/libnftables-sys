@@ -3,6 +3,8 @@ extern crate bindgen;
 use std::env;
 use std::path::PathBuf;
 
+const DEFAULT_NFTABLES_INCLUDE_ARG: &str = "-I/usr/include/nftables";
+
 fn main() {
     if let Ok(dir) = env::var("NFTABLES_LIB_DIR") {
         println!("cargo:rustc-link-search=native={}", dir);
@@ -17,17 +19,19 @@ fn main() {
     let bindings = bindgen::Builder::default();
     let bindings = match env::var("NFTABLES_INCLUDE_DIR") {
         Ok(dir) => bindings.clang_arg(format!("-I{}", dir)),
-        _       => bindings
+        _       => bindings.clang_arg(DEFAULT_NFTABLES_INCLUDE_ARG)
     };
     let bindings = bindings
         // generate only nftables
-        .whitelist_function("nft_.*")
-        .whitelist_type("nft_.*")
+        .allowlist_function("nft_.*")
+        //.whitelist_type("nft_.*")
+        .allowlist_type("nft_.*")
+        .allowlist_var("NFT_CTX_.*")
         // do not bind functions using FILE
         .opaque_type("nft_ctx_set_output")
         .opaque_type("nft_ctx_set_error")
         // remove one extra type
-        .blacklist_type("__uint32_t")
+        .blocklist_type("__uint32_t")
         // simplify constants names
         .prepend_enum_name(false)
         // The input header we would like to generate
